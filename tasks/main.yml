@@ -9,7 +9,7 @@
   unarchive:
     src:
       "https://golang.org/dl/go{{ golang_version }}\
-      .{{ golang_os }}-{{ golang_arch }}.tar.gz"
+      .{{ golang_os }}-{{ golang_arch[ansible_architecture] }}.tar.gz"
     dest: "/usr/local/lib/golang-{{ golang_version }}"
     remote_src: true
     extra_opts:
