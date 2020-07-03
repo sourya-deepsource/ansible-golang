@@ -3,6 +3,14 @@
   hosts: all
 
   tasks:
-    - name: Example assertion
-      assert:
-        that: true
+    - name: Should create target directory
+      stat:
+        path: /usr/local/lib/golang-1.14.4
+      register: target_directory
+      failed_when: not target_directory.stat.exists
+
+    - name: Should extract golang into target directory
+      command: ls /usr/local/lib/golang-1.14.4
+      register: target_directory_files
+      failed_when: not target_directory_files.stdout_lines | length > 2
+      changed_when: false

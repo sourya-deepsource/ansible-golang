@@ -1,1 +1,4 @@
 ---
+golang_version: ''
+golang_os: linux
+golang_arch: amd64

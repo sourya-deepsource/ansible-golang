@@ -5,3 +5,4 @@
 
   roles:
     - role: ansible-golang
+      golang_version: 1.14.4
