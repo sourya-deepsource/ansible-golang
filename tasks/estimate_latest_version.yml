@@ -1,0 +1,29 @@
+---
+# Need to estimate latest version from github
+- name: Install git
+  package:
+    name: git
+    state: present
+
+# I will not use the git module here cause I will
+# not install a module named 'github3' for one single task
+- name: Estimate latest version  # noqa 303
+  shell: |
+    set -o pipefail
+    git ls-remote https://github.com/golang/go \
+    | grep refs/tags \
+    | grep -oE "([0-9]+\.[0-9]+\.[0-9]+(beta[0-9]+|rc[0-9]+)?)$" \
+    | sort --version-sort \
+    | tail -n 1
+  args:
+    executable: /bin/bash
+  register: latest_golang_version
+  changed_when: false
+
+- name: Use estimated version
+  set_fact:
+    latest_version: "{{ latest_golang_version.stdout }}"
+
+- debug:
+    msg: "Latest available version: {{ latest_version }}"
+  when: latest_version is defined

@@ -1,22 +1,30 @@
 ---
+- include: estimate_installed_version.yml
+
+- include: estimate_latest_version.yml
+  when: sops_version is not defined
+    or sops_version | length < 1
+
+- include: estimate_version_to_be_installed.yml
+
 - name: Create source directory
   file:
-    path: "/usr/local/lib/golang-{{ golang_version }}"
+    path: "/usr/local/lib/golang-{{ version_to_be_installed }}"
     state: directory
     mode: 0755
 
 - name: Download and extract the archive
   unarchive:
     src:
-      "https://golang.org/dl/go{{ golang_version }}\
+      "https://golang.org/dl/go{{ version_to_be_installed }}\
       .{{ golang_os }}-{{ golang_arch[ansible_architecture] }}.tar.gz"
-    dest: "/usr/local/lib/golang-{{ golang_version }}"
+    dest: "/usr/local/lib/golang-{{ version_to_be_installed }}"
     remote_src: true
     extra_opts:
       - '--strip-components=1'
 
 - name: Create go link
   file:
-    src: "/usr/local/lib/golang-{{ golang_version }}/bin/go"
+    src: "/usr/local/lib/golang-{{ version_to_be_installed }}/bin/go"
     dest: /usr/local/bin/go
     state: link

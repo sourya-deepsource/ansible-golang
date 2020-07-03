@@ -1,0 +1,33 @@
+---
+- name: Estimate if installed
+  stat:
+    path: "{{ golang_bin_path }}"
+  register: golang_bin
+
+- name: Estimate installed version
+  command: "{{ golang_bin_path }} version"
+  when: golang_bin.stat.exists
+  register: golang_installed_version
+  changed_when: false
+
+- name: Try to parse installed version
+  set_fact:
+    installed_version: "{{
+      golang_installed_version.stdout
+      | regex_search(regexp,'\\1')
+      | first
+      }}"
+  vars:
+    regexp:
+      "^go version go([0-9]+.[0-9]+.[0-9]+(beta[0-9]+|rc[0-9]+)?) \
+      {{ golang_os }}/{{ golang_arch[ansible_architecture] }}$"
+  when: golang_installed_version.stdout is defined
+  ignore_errors: true
+
+- debug:
+    msg: "Installed version: {{ installed_version }}"
+  when: installed_version is defined
+
+- debug:
+    msg: "Installed version: <none>"
+  when: installed_version is not defined
