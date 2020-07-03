@@ -1,0 +1,22 @@
+---
+- name: Verify
+  hosts: all
+
+  tasks:
+    - name: Should create target directory
+      stat:
+        path: /usr/local/lib/golang-1.13.12
+      register: target_directory
+      failed_when: not target_directory.stat.exists
+
+    - name: Should extract golang into target directory
+      command: ls /usr/local/lib/golang-1.13.12
+      register: target_directory_files
+      failed_when: not target_directory_files.stdout_lines | length > 2
+      changed_when: false
+
+    - name: Should install go executible
+      command: go version
+      register: go_exec_version
+      failed_when: go_exec_version.stdout != 'go version go1.13.12 linux/amd64'
+      changed_when: false

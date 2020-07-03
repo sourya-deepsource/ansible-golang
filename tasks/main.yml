@@ -2,8 +2,8 @@
 - include: estimate_installed_version.yml
 
 - include: estimate_latest_version.yml
-  when: sops_version is not defined
-    or sops_version | length < 1
+  when: golang_version is not defined
+    or golang_version | length < 1
 
 - include: estimate_version_to_be_installed.yml
 

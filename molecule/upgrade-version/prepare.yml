@@ -1,0 +1,8 @@
+---
+- name: Prepare
+  hosts: all
+  become: true
+
+  roles:
+    - role: ansible-golang
+      golang_version: 1.13.12
