@@ -14,3 +14,9 @@
       register: target_directory_files
       failed_when: not target_directory_files.stdout_lines | length > 2
       changed_when: false
+
+    - name: Should install go executible
+      command: go version
+      register: go_exec_version
+      failed_when: go_exec_version.stdout != 'go version go1.14.4 linux/amd64'
+      changed_when: false
