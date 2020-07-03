@@ -1,7 +1,7 @@
 ---
 - name: Converge
   hosts: all
-  tasks:
-    - name: "Include ansible-golang"
-      include_role:
-        name: "ansible-golang"
+  become: true
+
+  roles:
+    - role: ansible-golang
