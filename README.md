@@ -60,10 +60,7 @@ Requirements:
 ### Run within docker
 
 ```shell script
-molecule test \
-&& molecule test -s fixed-latest-version \
-&& molecule test -s fixed-older-version \
-&& molecule test -s upgrade-version
+molecule test --all
 ```
 
 I recommend to use [pyenv](https://github.com/pyenv/pyenv) for local testing.
